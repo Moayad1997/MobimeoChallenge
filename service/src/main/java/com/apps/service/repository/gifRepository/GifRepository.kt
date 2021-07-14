@@ -7,10 +7,9 @@ import com.apps.service.retrofit.utils.Resource
 import com.apps.service.utils.Constants
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import org.koin.core.KoinComponent
 
 
-class GifRepository : BaseRepository(), IGifRepository, KoinComponent {
+class GifRepository : BaseRepository(), IGifRepository {
 
     override suspend fun search(
         page: Int,
