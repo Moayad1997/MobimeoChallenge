@@ -6,8 +6,10 @@ import com.apps.service.repository.gifRepository.response.Gif
 import com.apps.service.retrofit.utils.Status
 import com.apps.service.utils.Constants
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+
+
 
 /**
  * Created by Moayad Albarbary on 7/13/2021.
@@ -15,57 +17,85 @@ import kotlinx.coroutines.launch
 class SearchViewModel(private val gifRepository: IGifRepository) : ViewModel() {
 
 
-    private val _dataLoading = MutableLiveData<Boolean>()
-    val dataLoading: LiveData<Boolean> = _dataLoading
+    private val _items = MutableLiveData<MutableList<Gif>>().apply { value = mutableListOf() }
+    val items: LiveData<MutableList<Gif>> = _items
 
-    private val _items = MutableLiveData<List<Gif>>().apply { value = emptyList() }
-    val items: LiveData<List<Gif>> = _items
+    private val _isLoading = MutableLiveData<Boolean>().apply { value = false }
+    val isLoading: LiveData<Boolean> = _isLoading
 
-
-    // This LiveData depends on another liveData  so we can use a transformation for it .
     val empty: LiveData<Boolean> = Transformations.map(_items) {
         it.isEmpty()
     }
 
-    fun loadMoreItem(){
-/*        _dataLoading.postValue(true)
+    private val _error = MutableLiveData<String>()
+    val error: LiveData<String> = _error
+
+    var offset = 0
+    private var lastSearchQuery = ""
+
+
+    fun loadMoreItems() {
         viewModelScope.launch(Dispatchers.IO) {
-            gifRepository.search(query = query, page = page, itemLimit = Constants.ITEMS_LIMIT)
-                .collect {
+            offset += Constants.ITEMS_LIMIT
+            gifRepository.search(
+                query = lastSearchQuery,
+                offset = offset,
+                itemLimit = Constants.ITEMS_LIMIT
+            )
+                .collectLatest {
                     when (it.status) {
                         Status.SUCCESS -> {
-                            _dataLoading.postValue(false)
-                            _items.value?
-                            _items.postValue(it.data?.searchResult)
+                            if (it.data != null && it.data!!.meta.status == 200) {
+                                _items.postValue(it.data?.searchResult)
+                            } else {
+                                _error.postValue(
+                                    it.data?.meta?.msg ?: "Something happen try again please"
+                                )
+                            }
+                            _isLoading.postValue(false)
                         }
                         Status.ERROR -> {
-                            _dataLoading.postValue(false)
+                            _error.postValue(it.message ?: "Something happen try again please")
+                            _isLoading.postValue(false)
                         }
                         Status.LOADING -> {
-                            _dataLoading.postValue(true)
+                            _isLoading.postValue(true)
                         }
                     }
 
                 }
 
 
-        }*/
+        }
     }
-    fun search(query: String, page: Int) {
-        _dataLoading.postValue(true)
+
+    fun clearSearchData() {
+        offset = 0
+        _items.value = mutableListOf()
+        lastSearchQuery = ""
+    }
+
+    fun isLastSearchQueryEmpty(): Boolean {
+        return lastSearchQuery.isEmpty()
+    }
+
+    fun search(query: String) {
+        lastSearchQuery = query
+        offset = 0
         viewModelScope.launch(Dispatchers.IO) {
-            gifRepository.search(query = query, page = page, itemLimit = Constants.ITEMS_LIMIT)
-                .collect {
+            gifRepository.search(query = query, offset = offset, itemLimit = Constants.ITEMS_LIMIT)
+                .collectLatest {
                     when (it.status) {
                         Status.SUCCESS -> {
-                            _dataLoading.postValue(false)
                             _items.postValue(it.data?.searchResult)
+                            _isLoading.postValue(false)
                         }
                         Status.ERROR -> {
-                            _dataLoading.postValue(false)
+                            _isLoading.postValue(false)
+                            _error.postValue(it.message ?: "Something happen try again please")
                         }
                         Status.LOADING -> {
-                            _dataLoading.postValue(true)
+                            _isLoading.postValue(true)
                         }
                     }
 

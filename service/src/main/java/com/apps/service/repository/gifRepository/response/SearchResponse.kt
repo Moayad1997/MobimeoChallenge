@@ -11,5 +11,5 @@ data class SearchResponse(
     @SerializedName("meta")
     var meta: Meta = Meta(),
     @SerializedName("data")
-    var searchResult: List<Gif> = listOf(),
+    var searchResult: MutableList<Gif> = mutableListOf(),
 ) : Serializable

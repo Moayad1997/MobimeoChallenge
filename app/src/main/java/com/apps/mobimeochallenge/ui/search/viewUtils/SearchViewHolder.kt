@@ -17,8 +17,9 @@ class SearchViewHolder(private val searchViewHolderBinding: SearchViewHolderBind
         }
     }
 
-    fun bindView(gif: Gif) {
+    fun bindView(gif: Gif, onClickListener: OnClickListener) {
         searchViewHolderBinding.gif = gif
+        searchViewHolderBinding.clickListener = onClickListener
         searchViewHolderBinding.executePendingBindings()
     }
 

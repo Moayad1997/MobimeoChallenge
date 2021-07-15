@@ -12,15 +12,17 @@ import kotlinx.coroutines.flow.flow
 class GifRepository : BaseRepository(), IGifRepository {
 
     override suspend fun search(
-        page: Int,
+        offset: Int,
         query: String,
         itemLimit: Int
     ): Flow<Resource<SearchResponse>> {
         return flow {
+            emit(Resource.loading())
 
             val queryMap = mapOf(
                 "api_key" to Constants.API_KEY,
                 "q" to query,
+                "offset" to offset.toString(),
                 "lang" to "en",
                 "rating" to "g",
                 "limit" to itemLimit.toString(),

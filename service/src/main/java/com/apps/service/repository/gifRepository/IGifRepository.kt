@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
  */
 interface IGifRepository {
     suspend fun search(
-        page: Int = 1,
+        offset: Int = 0,
         query: String,
         itemLimit: Int
     ): Flow<Resource<SearchResponse>>

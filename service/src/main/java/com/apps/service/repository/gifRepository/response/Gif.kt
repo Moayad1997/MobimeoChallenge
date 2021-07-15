@@ -30,4 +30,8 @@ data class Gif(
     var url: String = "",
     @SerializedName("username")
     var username: String = ""
-) : Serializable
+) : Serializable {
+    fun getImageUrl(): String {
+        return images.downsized.url
+    }
+}

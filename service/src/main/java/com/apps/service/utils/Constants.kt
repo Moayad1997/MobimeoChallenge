@@ -10,7 +10,7 @@ object Constants {
     const val ACCEPT_HEADER =
         "application/json"
 
-    const val ITEMS_LIMIT = 5
+    const val ITEMS_LIMIT = 10
 
 
 }
