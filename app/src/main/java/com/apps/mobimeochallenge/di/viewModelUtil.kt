@@ -6,7 +6,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 /**
- * Created by Moayad Albarbary on 5/21/2021.
+ * Created by Moayad Albarbary on 7/13/2021.
  * module to prepare ViewModels objects to inject it
  * @viewModel to inject class as viewModel
  */

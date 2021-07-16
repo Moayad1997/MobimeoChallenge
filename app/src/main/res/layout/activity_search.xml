@@ -74,7 +74,6 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:elevation="14dp"
-                android:padding="@dimen/icon_padding"
                 android:visibility="@{searchViewModel.isLoading ? View.VISIBLE : View.INVISIBLE }"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -121,7 +120,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/search_layout"
-            tools:visibility="gone">
+            tools:visibility="visible">
 
             <ImageView
                 android:id="@+id/search_icon"
@@ -133,10 +132,10 @@
                 android:src="@drawable/ic_search"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHeight_percent=".2"
+                app:layout_constraintHeight_percent=".3"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent=".3" />
+                app:layout_constraintWidth_percent=".5" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
@@ -144,7 +143,7 @@
                 android:text="@string/empty_result"
                 android:textAlignment="center"
                 android:textSize="24sp"
-                android:visibility="@{searchViewModel.isLastSearchQueryEmpty() ? View.GONE : View.VISIBLE  }"
+                android:visibility="@{searchViewModel.empty &amp;&amp; searchViewModel.isLastSearchQueryEmpty() ? View.GONE : View.VISIBLE  }"
                 app:layout_constraintEnd_toEndOf="@id/search_icon"
                 app:layout_constraintStart_toStartOf="@+id/search_icon"
                 app:layout_constraintTop_toBottomOf="@+id/search_icon" />
