@@ -50,11 +50,15 @@ class SearchActivity : AppCompatActivity() {
     private fun setupSearchObserver() {
         searchViewModel.items.observe(this) {
             if (searchViewModel.offset != 0) {
-                searchActivityBinding.smartRefreshLayout.finishLoadMore()
                 searchAdapter.updateData(it)
             } else {
                 searchAdapter.setNewList(it)
             }
+        }
+
+        searchViewModel.isLoading.observe(this) { isLoading ->
+            if (!isLoading)
+                searchActivityBinding.smartRefreshLayout.finishLoadMore()
         }
 
         searchViewModel.error.observe(this) {

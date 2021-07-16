@@ -18,53 +18,70 @@
         android:background="@color/background_color"
         tools:context=".ui.search.SearchFragment">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/search_layout"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/tool_bar_height"
             android:background="@color/white"
             android:elevation="12dp"
             android:gravity="center"
             android:padding="2dp"
-            android:weightSum="6"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <ImageView
+                android:id="@id/search_icon2"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:padding="@dimen/icon_padding"
-                android:src="@drawable/ic_search" />
+                android:src="@drawable/ic_search"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent=".15" />
 
             <EditText
                 android:id="@+id/search_edit_text"
                 android:layout_width="0dp"
-                android:layout_height="56dp"
+                android:layout_height="0dp"
                 android:layout_weight="4"
                 android:background="@null"
                 android:hint="@string/search_hint"
                 android:imeOptions="actionSearch"
                 android:inputType="text"
-                android:padding="@dimen/small_padding" />
+                android:padding="@dimen/small_padding"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/clear_text_icon"
+                app:layout_constraintStart_toEndOf="@+id/search_icon2"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/clear_text_icon"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
+                android:layout_height="0dp"
+                android:elevation="10dp"
                 android:padding="@dimen/icon_padding"
                 android:src="@drawable/ic_close"
-                android:visibility="@{searchViewModel.isLoading ? View.GONE : View.VISIBLE }" />
+                android:visibility="@{searchViewModel.isLoading || searchViewModel.empty ? View.INVISIBLE : View.VISIBLE }"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent=".15" />
 
             <ImageView
                 android:id="@+id/loading"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:visibility="@{searchViewModel.isLoading ? View.VISIBLE : View.GONE }" />
-        </LinearLayout>
+                android:layout_height="0dp"
+                android:elevation="14dp"
+                android:padding="@dimen/icon_padding"
+                android:visibility="@{searchViewModel.isLoading ? View.VISIBLE : View.INVISIBLE }"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent=".15" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
         <com.scwang.smartrefresh.layout.SmartRefreshLayout

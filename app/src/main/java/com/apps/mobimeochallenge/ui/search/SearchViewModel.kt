@@ -10,7 +10,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 
-
 /**
  * Created by Moayad Albarbary on 7/13/2021.
  */
@@ -46,7 +45,10 @@ class SearchViewModel(private val gifRepository: IGifRepository) : ViewModel() {
                     when (it.status) {
                         Status.SUCCESS -> {
                             if (it.data != null && it.data!!.meta.status == 200) {
-                                _items.postValue(it.data?.searchResult)
+
+                                if (it.data!!.searchResult.isNotEmpty())
+                                    _items.postValue(it.data?.searchResult)
+
                             } else {
                                 _error.postValue(
                                     it.data?.meta?.msg ?: "Something happen try again please"
